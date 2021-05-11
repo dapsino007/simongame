@@ -3,10 +3,10 @@ var buttonColors = ["red", "blue", "green", "yellow"];
 var gamePattern = [];
 var userClickedPattern = [];
 
-var wrongSeqSound = new Audio("sounds/wrong.mp3")
+var wrongSeqSound = new Audio("sounds/wrong.mp3");
 
 function playSound(color){
-  var audio = new Audio("sounds/"+color+".mp3");
+  var audio = new Audio("sounds/" + color + ".mp3");
   audio.play();
 }
 
@@ -32,8 +32,13 @@ function gameOver(){
   setTimeout(function () {
     $("body").removeClass("game-over");
   }, 100);
-  gamePattern.splice(0, gamePattern.length);
-  userClickedPattern.splice(0, userClickedPattern.length);
+  setTimeout(function () {
+    alertUserLevel();
+  }, 150);
+  setTimeout(function () {
+    gamePattern.splice(0, gamePattern.length);
+    userClickedPattern.splice(0, userClickedPattern.length);
+  }, 200);
   $("body").keypress(function(event){
     if(gamePattern.length === 0){
       nextSequence();
@@ -42,12 +47,14 @@ function gameOver(){
   })
 }
 
+
   $('body').keypress(function(event){
     if(gamePattern.length === 0){
       nextSequence();
-    $("h1").text("Level "+ gamePattern.length);
+      $("h1").text("Level "+ gamePattern.length);
+
     }
-  })
+  });
 
   $(".btn").click(function(){
     var userChosenColor = this.id;
@@ -73,5 +80,20 @@ function gameOver(){
     }
     else if(JSON.stringify(gamePattern) !== JSON.stringify(userClickedPattern)){
       gameOver();
+
     }
   });
+
+  function alertUserLevel(){
+    if(gamePattern.length < 3){
+      alert("You made it to level " + gamePattern.length + "! You did okay, but can do better.🤔");
+    }
+    else if(gamePattern.length >2 && gamePattern.length <7){
+      alert("Okay! You made it to level " + gamePattern.length + "! Now that is what I am talking about.🤩");
+    }
+    else if(gamePattern.length>6 && gamePattern.length < 12){
+      alert("oh la la... you made it to level " + gamePattern.length + "! You definitely can represent the human race. 😇😱");
+    }
+    else{alert("🤯🤯🤯 Are you even human?!!! You made it to level " + gamePattern.length + "! You are definitely on fire🔥 ");
+    }
+  }
